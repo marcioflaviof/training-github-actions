@@ -9,6 +9,15 @@ function App() {
   const [filtered, setFiltered] = useState([]);
 
   useEffect(() => {
+    const getLocalTodos = () => {
+      if (localStorage.getItem("todos") === null) {
+        localStorage.setItem("todos", JSON.stringify([]));
+      } else {
+        const localTodo = JSON.parse(localStorage.getItem("todos"));
+        setTodos(localTodo);
+      }
+    };
+
     getLocalTodos();
   }, []);
 
@@ -27,28 +36,19 @@ function App() {
       }
     };
 
+    const saveLocalTodos = () => {
+      if (localStorage.getItem("todos") === null) {
+        localStorage.setItem("todos", JSON.stringify([]));
+      }
+
+      if (todos.length > 0) {
+        localStorage.setItem("todos", JSON.stringify(todos));
+      }
+    };
+
     filterHandler();
     saveLocalTodos();
   }, [todos, status]);
-
-  const saveLocalTodos = () => {
-    if (localStorage.getItem("todos") === null) {
-      localStorage.setItem("todos", JSON.stringify([]));
-    }
-
-    if (todos.length > 0) {
-      localStorage.setItem("todos", JSON.stringify(todos));
-    }
-  };
-
-  const getLocalTodos = () => {
-    if (localStorage.getItem("todos") === null) {
-      localStorage.setItem("todos", JSON.stringify([]));
-    } else {
-      const localTodo = JSON.parse(localStorage.getItem("todos"));
-      setTodos(localTodo);
-    }
-  };
 
   return (
     <div className="app">
